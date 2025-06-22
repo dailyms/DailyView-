@@ -1,15 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Daily Growth Tracker</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="manifest" href="manifest.json">
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #121212; color: #fff; }
-    input, button {
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #121212;
+      color: #fff;
+    }
+    input {
       margin: 5px 0;
-      padding: 10px;
+      padding: 8px;
       width: 100%;
       max-width: 300px;
       background: #1e1e1e;
@@ -17,12 +19,22 @@
       border: 1px solid #444;
     }
     button {
+      margin-top: 10px;
+      padding: 10px 20px;
       background: #3b82f6;
+      border: none;
+      color: white;
       font-weight: bold;
       cursor: pointer;
     }
-    .chart { margin-top: 20px; }
-    canvas { width: 100%; max-width: 600px; height: 300px; }
+    .chart {
+      margin-top: 20px;
+    }
+    canvas {
+      width: 100%;
+      max-width: 600px;
+      height: 300px;
+    }
     ul.notes {
       margin-top: 10px;
       background: #1e1e1e;
@@ -31,32 +43,17 @@
       max-width: 600px;
       list-style-type: none;
     }
-    ul.notes li { margin-bottom: 8px; }
-    .banner {
-      height: 60px;
-      background: #2a2a2a;
-      color: #ccc;
-      text-align: center;
-      line-height: 60px;
-      margin: 10px 0;
+    ul.notes li {
+      margin-bottom: 8px;
     }
   </style>
 </head>
 <body>
-  <div class="banner">🔝 Ad Space (Top Banner)</div>
+  <h1>Daily Growth Tracker</h1><label>Starting Balance: <input id="start" type="number" value="150"></label><br> <label>Daily % Growth: <input id="rate" type="number" value="5"></label><br> <label>Days: <input id="days" type="number" value="30"></label><br> <button onclick="calculate()">Generate</button> <button onclick="resetFields()">Reset</button>
 
-  <h1>Daily Growth Tracker</h1>
-  <label>Starting Balance: <input id="start" type="number" value="82"></label><br>
-  <label>Daily % Growth: <input id="rate" type="number" value="8"></label><br>
-  <label>Days: <input id="days" type="number" value="30"></label><br>
-  <button onclick="calculate()">Generate</button>
-
-  <ul class="notes" id="summaryNotes"></ul>
-  <div class="chart"><canvas id="growthChart"></canvas></div>
-  <div class="banner">🔚 Ad Space (Bottom Banner)</div>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script>
+  <ul class="notes" id="summaryNotes"></ul>  <div class="chart">
+    <canvas id="growthChart"></canvas>
+  </div>  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>  <script>
     function calculate() {
       const start = parseFloat(document.getElementById('start').value);
       const rate = parseFloat(document.getElementById('rate').value);
@@ -71,7 +68,10 @@
       }
 
       const ctx = document.getElementById('growthChart').getContext('2d');
-      if (window.growthChart instanceof Chart) window.growthChart.destroy();
+      if (window.growthChart instanceof Chart) {
+        window.growthChart.destroy();
+      }
+
       window.growthChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -98,9 +98,23 @@
         <li><strong>Average Daily Gain:</strong> $${avgDailyGain.toFixed(2)}</li>
         <li><strong>Estimated Days to Double Balance:</strong> ${Math.ceil(timeToDouble)} days</li>
       `;
+      notes.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function resetFields() {
+      document.getElementById('start').value = 0;
+      document.getElementById('rate').value = 5;
+      document.getElementById('days').value = 0;
+
+      const notes = document.getElementById("summaryNotes");
+      notes.innerHTML = "";
+
+      const ctx = document.getElementById('growthChart').getContext('2d');
+      if (window.growthChart instanceof Chart) {
+        window.growthChart.destroy();
+      }
     }
 
     window.onload = calculate;
-  </script>
-</body>
+  </script></body>
 </html>
